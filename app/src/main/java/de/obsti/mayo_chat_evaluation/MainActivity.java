@@ -41,11 +41,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         if(currentUser == null) {
-            SendUserToLoginActivity();
+            sendUserToLoginActivity();
         }
     }
 
-    private void SendUserToLoginActivity() {
+    private void sendUserToLoginActivity() {
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
     }
