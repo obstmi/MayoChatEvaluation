@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "145327517261",
+    "firebase_url": "https://mayo-chat-evaluation.firebaseio.com",
+    "project_id": "mayo-chat-evaluation",
+    "storage_bucket": "mayo-chat-evaluation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145327517261:android:79a1786402bc8f3207b604",
+        "android_client_info": {
+          "package_name": "de.obsti.mayo_chat_evaluation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145327517261-bs8sdlfgbm6oegc1gfbff57pe8nr2vi7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcIQArPJo5iTo7-T6DDlFGF3g22QYI0VA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145327517261-bs8sdlfgbm6oegc1gfbff57pe8nr2vi7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
