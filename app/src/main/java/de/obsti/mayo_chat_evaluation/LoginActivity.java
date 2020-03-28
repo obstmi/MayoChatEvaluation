@@ -21,7 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    FirebaseUser currentUser;
     FirebaseAuth mAuth;
 
     //ToDo: deprecated, to be exchanged by ProgressBar
@@ -37,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
         initializeFields();
 
@@ -101,18 +99,13 @@ public class LoginActivity extends AppCompatActivity {
         loadingBar = new ProgressDialog(this);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if(currentUser != null) {
-            sendUserToMainActivity();
-        }
-    }
-
+    // Korrektur in Tutorial 12 - vergl. mit sendUserToRegisterActivity
     private void sendUserToMainActivity() {
-        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(loginIntent);
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        // GoBack-Button nicht erlaubt
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
     }
 
     //ToDo: bei jeden Click wird eine activity gestartet. finish() notwendig?
