@@ -57,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void retrieveUserInformation() {
-        rootRef.child("Users").child(currentUserID)
+        rootRef.child("users").child(currentUserID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -104,7 +104,7 @@ public class SettingsActivity extends AppCompatActivity {
             profileMap.put("name", settingsUserName);
             profileMap.put("status", settingsStatus);
 
-            rootRef.child("Users").child(currentUserID).setValue(profileMap)
+            rootRef.child("users").child(currentUserID).setValue(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
