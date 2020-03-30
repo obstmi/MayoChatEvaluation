@@ -44,6 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         initializeFields();
 
+        // default Eingabefeld 'Username': nicht anzeigen (nur, wenn er noch nicht gesetzt wurde)
         userName.setVisibility(View.INVISIBLE);
 
         updateAccountSettings.setOnClickListener(new View.OnClickListener() {
@@ -61,9 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        if(dataSnapshot.exists() && dataSnapshot.hasChild("name") && dataSnapshot.hasChild("image")) {
-//
-//                        }
+
                         if(dataSnapshot.exists() && dataSnapshot.hasChild("name") && dataSnapshot.hasChild("status")) {
                             String retrieveUsername = dataSnapshot.child("name").getValue().toString();
                             String retrieveStatus = dataSnapshot.child("status").getValue().toString();

@@ -63,10 +63,12 @@ public class GroupChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 saveMessageToDatabase();
                 userMessageInput.setText("");
+                mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
     }
 
+    // Alle Nachrichten der aufgerufenen Gruppe anzeigen
     @Override
     protected void onStart() {
         super.onStart();
@@ -103,6 +105,7 @@ public class GroupChatActivity extends AppCompatActivity {
         });
     }
 
+    // Hilfsmethode, um durch die Felder aller Nachrichten zu iterieren
     private void displayMessages(DataSnapshot dataSnapshot) {
         Iterator iterator = dataSnapshot.getChildren().iterator();
 
@@ -113,6 +116,8 @@ public class GroupChatActivity extends AppCompatActivity {
             String chatTime = (String) ((DataSnapshot)iterator.next()).getValue();
 
             displayTextMessages.append(chatName + ":\n" + chatMessage + "\n" + chatTime + "    " + chatDate + "\n\n\n");
+
+            mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
     }
 
