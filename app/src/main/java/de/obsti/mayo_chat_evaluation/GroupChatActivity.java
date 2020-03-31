@@ -128,6 +128,8 @@ public class GroupChatActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(message)) {
             Toast.makeText(this, "Enter a message", Toast.LENGTH_SHORT).show();
         } else {
+
+            // erst Datum und Zeit formatieren
             Calendar calForDate = Calendar.getInstance();
             SimpleDateFormat currentDateFormat = new SimpleDateFormat("dd.MMM.yyyy");
             currentDate = currentDateFormat.format(calForDate.getTime());
@@ -136,6 +138,7 @@ public class GroupChatActivity extends AppCompatActivity {
             SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm:ss");
             currentTime = currentTimeFormat.format(calForDate.getTime());
 
+            // wofür das gebraucht wird, ist mir noch nicht klar - irgendwie hängt es damit zusammen, dass eine ID für die Nachricht erstellt wird
             HashMap<String, Object> groupMessageKey = new HashMap<>();
             groupNameRef.updateChildren(groupMessageKey);
 
@@ -147,6 +150,7 @@ public class GroupChatActivity extends AppCompatActivity {
             messageInfoMap.put("date", currentDate);
             messageInfoMap.put("time", currentTime);
 
+            // jetzt abspeichern
             groupMessageKeyRef.updateChildren(messageInfoMap);
         }
     }

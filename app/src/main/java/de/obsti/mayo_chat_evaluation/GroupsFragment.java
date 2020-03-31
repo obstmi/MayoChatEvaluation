@@ -69,6 +69,7 @@ public class GroupsFragment extends Fragment {
         return groupFragmentView;
     }
 
+    // listet alle Gruppen auf, indem sie
     private void retrieveAndDisplayGroups() {
         groupRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -92,6 +93,7 @@ public class GroupsFragment extends Fragment {
         });
     }
 
+    // listOfGroups mit der list_view verbinden
     private void initializeFields() {
         listView = (ListView)groupFragmentView.findViewById(R.id.list_view);
         arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listOfGroups);
