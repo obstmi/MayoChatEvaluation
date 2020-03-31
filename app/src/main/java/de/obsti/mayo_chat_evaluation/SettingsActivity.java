@@ -1,14 +1,17 @@
 package de.obsti.mayo_chat_evaluation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Gallery;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,6 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
@@ -28,10 +33,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Button updateAccountSettings;
     private EditText userName, userStatus;
+    // Profilbild in Kreisdarstellung
     private CircleImageView userProfileImage;
     private String currentUserID;
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef;
+
+    private static final int GALLERY_PIC = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,17 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         retrieveUserInformation();
+
+        userProfileImage.setOnClickListener(new View.OnClickListener() {
+            // Beim Klick Bildergalerie öffnen
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, GALLERY_PIC);
+            }
+        });
     }
 
     private void retrieveUserInformation() {
@@ -124,6 +143,27 @@ public class SettingsActivity extends AppCompatActivity {
         userName = (EditText)findViewById(R.id.set_user_name);
         userStatus = (EditText)findViewById(R.id.set_profile_status);
         userProfileImage = (CircleImageView)findViewById(R.id.set_profile_image);
+    }
+
+    // Profilbild aktualisieren
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GALLERY_PIC && resultCode == RESULT_OK && data != null) {
+            Uri imageUri = data.getData();
+
+            //CropImage.activity() --> FileBrowser wird 2x aufgerufen
+            CropImage.activity(imageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1,1)
+                    .start(this);
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+        }
     }
 
     private void sendUserToMainActivity() {
