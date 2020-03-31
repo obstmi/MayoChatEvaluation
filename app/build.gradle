@@ -43,6 +43,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     // Android-Image-Cropper: https://github.com/ArthurHub/Android-Image-Cropper
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    // Picasso for image downloading: https://square.github.io/picasso/
+    implementation 'com.squareup.picasso:picasso:2.71828'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
