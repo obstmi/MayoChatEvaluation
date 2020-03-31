@@ -22,6 +22,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -38,6 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
     private String currentUserID;
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef;
+    private StorageReference userProfileImagesRef;
 
     private static final int GALLERY_PIC = 1;
 
@@ -49,6 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
+        userProfileImagesRef = FirebaseStorage.getInstance().getReference().child("profile_images");
 
         initializeFields();
 
@@ -76,6 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    // Vorhandene Daten auslesen
     private void retrieveUserInformation() {
         rootRef.child("users").child(currentUserID)
                 .addValueEventListener(new ValueEventListener() {
@@ -89,6 +95,7 @@ public class SettingsActivity extends AppCompatActivity {
                             userName.setText(retrieveUsername);
                             userStatus.setText(retrieveStatus);
 
+                            // das Profilbild ist optional
                             if(dataSnapshot.hasChild("image")) {
                                 String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
                             }
@@ -106,6 +113,7 @@ public class SettingsActivity extends AppCompatActivity {
                 });
     }
 
+    // Eingegebene Daten auslesen und abspeichern
     private void updateSettings() {
         String settingsUserName = userName.getText().toString();
         String settingsStatus = userStatus.getText().toString();
@@ -138,6 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    // Oberfläche mit Membervariablen verknüpfen
     private void initializeFields() {
         updateAccountSettings = (Button)findViewById(R.id.update_settings_button);
         userName = (EditText)findViewById(R.id.set_user_name);
@@ -162,6 +171,27 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if(resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+
+                // Filename in der Firebase-DB. Ist die jpg-Endung wirklich sinnvoll?
+                // StorageReference filePath = userProfileImagesRef.child(currentUserID + ".jpg");
+
+                StorageReference filePath = userProfileImagesRef.child(currentUserID);
+
+                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            Toast.makeText(SettingsActivity.this, "Profile image uploaded", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String message = task.getException().getMessage();
+                            Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
 
         }
     }
