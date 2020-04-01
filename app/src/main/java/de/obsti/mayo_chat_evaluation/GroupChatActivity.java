@@ -47,7 +47,6 @@ public class GroupChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_chat);
 
         currentGroupName = getIntent().getExtras().getString("groupName").toString();
-        Toast.makeText(GroupChatActivity.this, currentGroupName, Toast.LENGTH_SHORT).show();
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
@@ -155,6 +154,7 @@ public class GroupChatActivity extends AppCompatActivity {
         }
     }
 
+    // Username für's Abspeichern herausfinden
     private void getUserInformation() {
         usersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
