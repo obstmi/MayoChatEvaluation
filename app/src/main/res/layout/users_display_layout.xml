@@ -11,7 +11,7 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/users_profile_image"
+            android:id="@+id/user_profile_image"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:src="@drawable/profile_image">
@@ -29,7 +29,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/users_profile_name"
+                    android:id="@+id/user_profile_name"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="username"
@@ -52,7 +52,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/users_status"
+                android:id="@+id/user_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="userstatus"

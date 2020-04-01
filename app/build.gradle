@@ -45,6 +45,10 @@ dependencies {
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     // Picasso for image downloading: https://square.github.io/picasso/
     implementation 'com.squareup.picasso:picasso:2.71828'
+    // FirebaseUI for Firebase Realtime Database
+    // https://github.com/firebase/FirebaseUI-Android
+    // Version has to be compatible with other firebase dependencies
+    implementation 'com.firebaseui:firebase-ui-database:6.2.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
