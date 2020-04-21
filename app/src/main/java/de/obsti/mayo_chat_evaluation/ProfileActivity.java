@@ -105,20 +105,50 @@ public class ProfileActivity extends AppCompatActivity {
 
                     }
                 });
+        // Button nur anzeigen und darauf reagieren, wenn nicht das eigene Profil angezeigt wird
         if(!senderUserId.equals(receiverUserId)) {
             sendMessageRequestButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     sendMessageRequestButton.setEnabled(false);
 
+                    // Chatrequest entweder senden oder löschen
                     if(currentState.equals("new")) {
                         sendChatRequest();
-                    }
+                    } else if(currentState.equals("request_sent")) {
+                    cancelChatRequest();
+                }
                 }
             });
         } else {
             sendMessageRequestButton.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void cancelChatRequest() {
+        //Chat-Reqeust des Senders entfernen
+        chatRequestRef.child(senderUserId).child(receiverUserId)
+                .removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            //Chat-Request beim Empfänger entfernen
+                            chatRequestRef.child(receiverUserId).child(senderUserId)
+                                    .removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()) {
+                                                sendMessageRequestButton.setEnabled(true);
+                                                currentState = "new";
+                                                sendMessageRequestButton.setText("send message");
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
     }
 
     private void sendChatRequest() {
