@@ -26,7 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String receiverUserId, senderUserId, currentState;
     private CircleImageView userProfileImage;
     private TextView userProfileName, userProfileStatus;
-    private Button sendMessageRequestButton;
+    private Button sendMessageRequestButton, declineMessageRequestButton;
 
     private DatabaseReference userRef, chatRequestRef;
     private FirebaseAuth mAuth;
@@ -50,6 +50,8 @@ public class ProfileActivity extends AppCompatActivity {
         userProfileName = (TextView)findViewById(R.id.visit_user_name);
         userProfileStatus = (TextView)findViewById(R.id.visit_profile_status);
         sendMessageRequestButton = (Button)findViewById(R.id.send_message_request_button);
+        declineMessageRequestButton = (Button)findViewById(R.id.decline_message_request_button);
+
         currentState = "new";
 
         // retrieve information:
@@ -84,6 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    // buttons entsprechend anzeigen und darauf reagieren
     private void manageChatRequest() {
         // zuerst den status des Buttons richtig setzen:
         chatRequestRef.child(senderUserId)
@@ -93,9 +96,24 @@ public class ProfileActivity extends AppCompatActivity {
                         if(dataSnapshot.hasChild(receiverUserId)) {
                             String requestType = dataSnapshot.child(receiverUserId).child("request_type").getValue().toString();
 
+                            // nach dem Absenden Button-Text ändern
                             if(requestType.equals("sent")) {
                                 currentState = "request_sent";
                                 sendMessageRequestButton.setText("cancel chat request");
+                            } else if(requestType.equals("received")) {
+                                currentState = "request_received";
+                                sendMessageRequestButton.setText("accept chat request");
+
+                                //der Empfänger kann den Chatrequest auch ablehnen
+                                declineMessageRequestButton.setVisibility(View.VISIBLE);
+                                declineMessageRequestButton.setEnabled(true);
+
+                                declineMessageRequestButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        cancelChatRequest();
+                                    }
+                                });
                             }
                         }
                     }
@@ -143,6 +161,9 @@ public class ProfileActivity extends AppCompatActivity {
                                                 sendMessageRequestButton.setEnabled(true);
                                                 currentState = "new";
                                                 sendMessageRequestButton.setText("send message");
+
+                                                declineMessageRequestButton.setVisibility(View.INVISIBLE);
+                                                declineMessageRequestButton.setEnabled(false);
                                             }
                                         }
                                     });
